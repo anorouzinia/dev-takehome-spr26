@@ -18,8 +18,10 @@ Make sure you are returning appropriate HTTP status codes in your responses from
 ### Setup
 
 1. Set up an appropriately-named MongoDB database and connect it to the application.
+# done
 
 2. Add a `requests` collection in your database where all item requests will be stored and make sure only data that meets the needed schema can be added to the collection.
+# done
 
 ### Basic API Endpoints
 
