@@ -4,11 +4,20 @@
 
 import mongoose from "mongoose";
 
-let cached = (global as any).mongoose;
+type MongooseCache = {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
 
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
+declare global {
+  var mongoose: MongooseCache | undefined;
 }
+
+const cached: MongooseCache =
+  global.mongoose ?? { conn: null, promise: null };
+
+global.mongoose = cached;
+
 
 export async function connectToDatabase() {
     const MONGODB_URI = process.env.MONGODB_URI;

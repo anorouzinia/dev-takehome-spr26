@@ -1,39 +1,29 @@
-import mongoose, { Schema, models, model } from "mongoose";
+// // lib/models/requests.ts
+import mongoose, { Schema, Model } from "mongoose";
 
-export type RequestStatus =
-  | "pending"
-  | "approved"
-  | "completed"
-  | "rejected";
+export interface IRequest {
+  requestorName: string;
+  itemRequested: string;
+  status: "pending" | "approved" | "completed" | "rejected";
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-  //schema is just a definition/blueprint of what data should look like
-const RequestSchema = new Schema(
+const RequestSchema = new Schema<IRequest>(
   {
-    requestorName: {
-      type: String,
-      required: true,
-      minlength: 3,
-      maxlength: 30,
-      trim: true,
-    },
-    itemRequested: {
-      type: String,
-      required: true,
-      minlength: 2,
-      maxlength: 100,
-      trim: true,
-    },
+    requestorName: { type: String, required: true },
+    itemRequested: { type: String, required: true },
     status: {
       type: String,
       enum: ["pending", "approved", "completed", "rejected"],
-      required: true,
       default: "pending",
     },
   },
-  {
-    timestamps: true, // creates createdAt & updatedAt automatically
-  }
+  { timestamps: true }
 );
 
-const Request = models.Request || model("Request", RequestSchema);
+const Request: Model<IRequest> =
+  mongoose.models.Request ||
+  mongoose.model<IRequest>("Request", RequestSchema);
+
 export default Request;
